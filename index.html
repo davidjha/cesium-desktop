@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; 
+               script-src 'self' 'unsafe-inline' 'unsafe-eval'; 
+               style-src 'self' 'unsafe-inline';
+               img-src 'self' data: blob: https://*.tile.openstreetmap.org;
+               worker-src 'self' blob:;
+               connect-src 'self' https://*.tile.openstreetmap.org;"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    /> 
+    <title>Hello World!</title>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/app.tsx"></script>
+    <script type="module" src="/src/renderer.ts"></script>
+  </body>
+</html>
