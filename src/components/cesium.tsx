@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import { OpenStreetMapImageryProvider, Viewer, ImageryLayer, CzmlDataSource } from 'cesium';
 
@@ -7,7 +7,7 @@ window.CESIUM_BASE_URL = './Cesium/';
 const CesiumMap = () => {
   const cesiumContainer = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Viewer | null>(null);
- 
+
   const handleLoadFile = async () => {
     const data = await window.electronAPI.pickCzmlFile();
     // Use viewerRef.current to access the globe we created in useEffect
@@ -21,7 +21,6 @@ const CesiumMap = () => {
       }
     }
   };
-
   useEffect(() => {
     if (cesiumContainer.current && !viewerRef.current) {
       viewerRef.current = new Viewer(cesiumContainer.current, {
@@ -31,12 +30,13 @@ const CesiumMap = () => {
         })),
         baseLayerPicker: false,
       });
-
-      window.electronAPI.onTriggerPicker(() => {
+      const unsubscribe = window.electronAPI.onTriggerPicker(() => {
         handleLoadFile();
-      })
+      });
 
       return () => {
+        unsubscribe();
+
         if (viewerRef.current && !viewerRef.current.isDestroyed()) {
           viewerRef.current.destroy();
           viewerRef.current = null;
